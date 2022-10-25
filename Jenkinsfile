@@ -20,16 +20,6 @@ pipeline {
                 sh 'terraform fmt'
             }
         }
-        stage ("terraform validate") {
-            steps {
-                sh 'terraform validate'
-            }
-        }
-        stage ("terrafrom plan") {
-            steps {
-                sh 'terraform plan '
-            }
-        }
         stage ("terraform apply") {
             steps {
                 sh 'terraform apply --auto-approve'

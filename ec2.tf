@@ -95,44 +95,12 @@ resource "aws_instance" "ec2_instance" {
   subnet_id              = aws_default_subnet.default_az1.id
   vpc_security_group_ids = [aws_security_group.ec2_security_group.id]
   key_name               = "tera"
-  #user_data            = file("install_jenkins.sh")
+  user_data            = file("install_tomcat.sh")
 
   tags = {
     Name = "ec2-jenkins server"
   }
 }
-
-
-# an empty resource block
-resource "null_resource" "name" {
-
-  # ssh into the ec2 instance 
-  connection {
-    type        = "ssh"
-    user        = "ec2-user"
-    private_key = file("~/Downloads/cloud-jenkins.pem")
-    host        = aws_instance.ec2_instance.public_ip
-  }
-
-  # copy the install_tomcat.sh file from local to the ec2 instance 
-  provisioner "file" {
-    source      = "install_tomcat.sh"
-    destination = "/tmp/install_tomcat.sh"
-  }
-
-  # set permissions and run the install_tomcat.sh file
-  provisioner "remote-exec" {
-    inline = [
-        "sudo chmod +x /tmp/install_tomcat.sh",
-        "sh /tmp/install_tomcat.sh",
-    ]
-  }
-
-  # wait for ec2 to be created
-  depends_on = [aws_instance.ec2_instance]
-}
-
-
 # print the url of the jenkins server
 output "website_url" {
   value     = join ("", ["http://", aws_instance.ec2_instance.public_dns, ":", "8080"])

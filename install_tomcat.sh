@@ -1,8 +1,13 @@
 #!/bin/bash
-sudo echo "tomcat-"
 sudo yum update –y
 sudo yum install java-1.8.0-openjdk
-sudo wget https://downloads.apache.org/tomcat/tomcat-9/v9.0.41/bin/apache-tomcat-9.0.41.tar.gz
-sudo tar -xvf /root/apache-tomcat-9.0.41.tar.gz
-sudo systemctl start tomcat 
-sudo systemctl enable tomcat
+sudo  wget https://dlcdn.apache.org/tomcat/tomcat-8/v8.5.83/bin/apache-tomcat-8.5.83.tar.gz
+sudo tar -xvf apache-tomcat-8.5.83.tar.gz
+sudo cd apache-tomcat-8.5.83
+sudo cd bin
+sudo chmod +x startup.sh
+sudo chmod +x shutdown.sh
+sudo ln -s /home/ubuntu/apache-tomcat-8.5.83/bin/startup.sh /usr/local/bin/tomcatup
+sudo ln -s /home/ubuntu/apache-tomcat-8.5.83/bin/shutdown.sh /usr/local/bin/tomcatdown
+sudo tomcatup
+sudo ./startup.sh

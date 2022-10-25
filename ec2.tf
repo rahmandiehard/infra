@@ -1,10 +1,3 @@
-# configured aws provider with proper credentials
-provider "aws" {
-  region    = "us-east-1"
-  profile   = "teraform-user"
-}
-
-
 # create default vpc if one does not exit
 resource "aws_default_vpc" "default_vpc" {
 

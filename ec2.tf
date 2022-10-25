@@ -22,7 +22,7 @@ resource "aws_default_subnet" "default_az1" {
 
 
 # create security group for the ec2 instance
-resource "aws_security_group" "ec2_security_group" {
+resource "aws_security_group" "ec2_tomcat_security_group" {
   name        = "ec2 security group"
   description = "allow access on ports 8080 and 22"
   vpc_id      = aws_default_vpc.default_vpc.id
@@ -59,7 +59,7 @@ resource "aws_security_group" "ec2_security_group" {
   }
 
   tags   = {
-    Name = "jenkins server security group"
+    Name = "tomcat server security group"
   }
 }
 
@@ -86,15 +86,15 @@ resource "aws_instance" "ec2_instance" {
   ami                    = data.aws_ami.amazon_linux_2.id
   instance_type          = "t2.micro"
   subnet_id              = aws_default_subnet.default_az1.id
-  vpc_security_group_ids = [aws_security_group.ec2_security_group.id]
+  vpc_security_group_ids = [aws_security_group.ec2_tomcat_security_group.id]
   key_name               = "tera"
   user_data            = file("install_tomcat.sh")
 
   tags = {
-    Name = "ec2-jenkins server"
+    Name = "tomcat server"
   }
 }
-# print the url of the jenkins server
+# print the url of the tomcat server
 output "website_url" {
   value     = join ("", ["http://", aws_instance.ec2_instance.public_dns, ":", "8080"])
 }
